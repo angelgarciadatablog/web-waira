@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WAIRA & DR — Catálogo</title>
+  <meta name="description" content="Calzado femenino minimalista con estética cálida. Descubre modelos por nombre y color, tallas disponibles y stock consolidado.">
+  <!-- Tipografías -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="nav">
+    <strong class="logo">WAIRA & DR</strong>
+  </header>
+
+  <main class="container">
+    <h1>Catálogo</h1>
+
+    <div class="filters">
+      <select id="filtroNombre">
+        <option value="" selected>Nombre (todos)</option>
+      </select>
+      <select id="filtroColor">
+        <option value="" selected>Color (todos)</option>
+      </select>
+      <label class="chk"><input type="checkbox" id="soloDisp"> Solo disponibles</label>
+      <button id="refresh" class="btn">Actualizar</button>
+    </div>
+
+    <div id="grid" class="grid"></div>
+    <p id="estado" class="estado"></p>
+  </main>
+
+  <script src="main.js"></script>
+</body>
+</html>

@@ -1,0 +1,172 @@
+/* ==============================
+   Tokens de diseño (paleta y base)
+   ============================== */
+:root{
+  --brand:       #2E4A3B;  /* Verde bosque */
+  --brand-ink:   #F9F6F1;  /* Texto sobre brand */
+  --sage:        #9FB7A5;  /* Salvia apoyo */
+  --champagne:   #E7D9C6;  /* Neutro cálido para superficies */
+  --bg:          #F9F6F1;  /* Fondo general */
+  --surface:     #FFFFFF;  /* Tarjetas blancas */
+  --ink:         #1A1A1A;  /* Texto principal */
+  --muted:       #5E6A65;  /* Texto secundario */
+  --line:        #E8E2D8;  /* Líneas y bordes suaves */
+  --shadow:      0 1px 1px rgba(0,0,0,.03), 0 6px 20px rgba(0,0,0,.06);
+}
+
+/* ==============================
+   Base tipográfica y layout
+   ============================== */
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+  font-size:16px; line-height:1.6;
+  -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+}
+h1,h2,h3{
+  font-family:"Cormorant Garamond", Georgia, "Times New Roman", serif;
+  letter-spacing:.3px;
+  margin:0 0 6px;
+  color:var(--ink);
+}
+h1{ font-size:clamp(32px, 4vw, 44px); font-weight:700; line-height:1.1; }
+h2{ font-size:clamp(22px, 2.6vw, 28px); font-weight:600; }
+h3{ font-size:20px; font-weight:500; }
+p{ margin:0 0 8px; color:var(--muted); }
+a{ color:inherit; text-decoration:none; }
+img{ max-width:100%; height:auto; display:block; }
+
+.container{ max-width:1000px; margin:24px auto; padding:0 16px; }
+
+/* ==============================
+   Header
+   ============================== */
+.nav{
+  position:sticky; top:0; z-index:10;
+  padding:12px 16px;
+  background:color-mix(in oklab, var(--surface) 85%, transparent);
+  backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--line);
+}
+.logo{ font-weight:700; letter-spacing:.5px; }
+
+/* ==============================
+   Controles (filtros y botones)
+   ============================== */
+.filters{
+  display:flex; gap:10px; flex-wrap:wrap; margin:14px 0 12px;
+  align-items:center;
+}
+.filters select{
+  appearance:none;
+  padding:10px 12px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:#fff;
+  color:var(--ink);
+  min-width:200px;
+  outline:none;
+}
+.filters select:focus-visible{
+  border-color:var(--brand);
+  box-shadow:0 0 0 3px color-mix(in oklab, var(--brand) 25%, transparent);
+}
+.chk{ display:flex; align-items:center; gap:8px; color:var(--muted); }
+
+.btn{
+  border:1px solid var(--brand);
+  background:var(--brand);
+  color:var(--brand-ink);
+  padding:10px 16px;
+  border-radius:999px;
+  cursor:pointer;
+  font-weight:600;
+  transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
+}
+.btn:hover{ transform:translateY(-1px); box-shadow:var(--shadow); }
+.btn:active{ transform:translateY(0); }
+.btn:focus-visible{ outline:2px solid color-mix(in oklab, var(--brand) 60%, transparent); outline-offset:2px; }
+
+/* ==============================
+   Grilla y tarjetas de producto
+   ============================== */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
+  margin-top:12px;
+}
+.card{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:16px;
+  overflow:hidden;
+  display:flex; flex-direction:column;
+  box-shadow:var(--shadow);
+  transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+}
+.card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 10px 28px rgba(0,0,0,.09);
+  border-color:color-mix(in oklab, var(--brand) 30%, var(--line));
+}
+/* Imagen más alta con altura responsiva + encuadre superior */
+.card img{
+  width: 100%;
+  height: clamp(220px, 28vw, 360px);
+  object-fit: cover;
+  object-position: 50% 30%;
+  background: var(--champagne);
+}
+@media (max-width: 1024px){
+  .card img{ height: clamp(200px, 32vw, 300px); }
+}
+@media (max-width: 720px){
+  .card img{ height: 220px; }
+}
+
+.card .body{ padding:14px; }
+.card h4{ margin:0 0 6px; font-weight:700; }
+.card p{ margin:0; color:var(--muted); font-size:14px; }
+
+.estado{ color:var(--muted); margin-top:10px; }
+
+/* Chips de tallas */
+.chips{ display:flex; gap:6px; flex-wrap:wrap; margin-top:8px; }
+.chip{
+  border:1px solid color-mix(in oklab, var(--sage) 30%, transparent);
+  background:color-mix(in oklab, var(--sage) 15%, white);
+  color:#2d3a35;
+  border-radius:999px; padding:4px 8px; font-size:12px;
+}
+.chip.soldout{ opacity:.55; text-decoration:line-through; }
+
+/* Estado agotado (del grupo) */
+.card.agotado{ opacity:.8; position:relative; }
+.card.agotado::after{
+  content:"Agotado";
+  position:absolute; top:10px; right:10px;
+  padding:6px 10px; border-radius:999px;
+  background:var(--ink); color:var(--brand-ink);
+  font-size:12px; font-weight:600;
+}
+
+/* ==============================
+   Responsive
+   ============================== */
+@media (max-width:1024px){
+  .grid{ grid-template-columns:repeat(3,1fr); }
+}
+@media (max-width:720px){
+  .grid{ grid-template-columns:repeat(2,1fr); }
+}
+
+/* ==============================
+   Accesibilidad visual
+   ============================== */
+:focus-visible{
+  outline:2px solid color-mix(in oklab, var(--brand) 55%, transparent);
+  outline-offset:2px;
+}
