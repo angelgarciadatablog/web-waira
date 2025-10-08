@@ -25,6 +25,10 @@ const filtroNombre = document.getElementById("filtroNombre");
 const filtroColor = document.getElementById("filtroColor");
 const soloDisp = document.getElementById("soloDisp");
 document.getElementById("refresh")?.addEventListener("click", () => {
+  // Limpiar caché manualmente
+  localStorage.removeItem('waira_catalog_cache');
+  console.log('🗑️ Caché limpiado manualmente');
+
   CSV_VERSION = Date.now();   // fuerza nueva URL de CSV e imágenes
   cargarCatalogo();
 });
@@ -83,13 +87,61 @@ function csvToObjects(csv){
   });
 }
 
-// === Fetch CSV ===
+// === Fetch CSV con caché localStorage (3 minutos) ===
 async function fetchCSV(url){
-  const txt = await fetch(url, { cache: "no-store" }).then(r=>{
-    if(!r.ok) throw new Error("CSV no disponible");
-    return r.text();
-  });
-  return csvToObjects(txt);
+  const CACHE_KEY = 'waira_catalog_cache';
+  const CACHE_TIME = 3 * 60 * 1000; // 3 minutos en milisegundos
+
+  // Revisar si hay caché válido en localStorage
+  try {
+    const cached = localStorage.getItem(CACHE_KEY);
+    if (cached) {
+      const { data, timestamp } = JSON.parse(cached);
+      const age = Date.now() - timestamp;
+
+      if (age < CACHE_TIME) {
+        const remaining = Math.round((CACHE_TIME - age) / 1000);
+        console.log(`✅ Usando caché (válido por ${remaining}s más)`);
+        return csvToObjects(data);
+      } else {
+        console.log('⏰ Caché expirado, descargando datos frescos...');
+      }
+    }
+  } catch (e) {
+    console.warn('Error leyendo caché:', e);
+  }
+
+  // Si no hay caché válido, hacer request a Google Sheets
+  console.log('📡 Descargando catálogo desde Google Sheets...');
+  try {
+    const txt = await fetch(url, { cache: "no-store" }).then(r=>{
+      if(!r.ok) throw new Error("CSV no disponible");
+      return r.text();
+    });
+
+    // Guardar en caché con timestamp
+    try {
+      localStorage.setItem(CACHE_KEY, JSON.stringify({
+        data: txt,
+        timestamp: Date.now()
+      }));
+      console.log('💾 Datos guardados en caché');
+    } catch (e) {
+      console.warn('No se pudo guardar caché:', e);
+    }
+
+    return csvToObjects(txt);
+  } catch (error) {
+    // Fallback: intentar usar caché expirado si hay error de red
+    console.error('❌ Error descargando datos:', error);
+    const cached = localStorage.getItem(CACHE_KEY);
+    if (cached) {
+      console.log('🔄 Usando caché antiguo como fallback');
+      const { data } = JSON.parse(cached);
+      return csvToObjects(data);
+    }
+    throw error;
+  }
 }
 
 // === Agrupar por (nombre + color) y calcular métricas ===

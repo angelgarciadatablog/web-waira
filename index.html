@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>WAIRA & DR — Catálogo</title>
+  <title>WAIRA & DR — Calzado Femenino Minimalista</title>
   <meta name="description" content="Calzado femenino minimalista con estética cálida. Descubre modelos por nombre y color, tallas disponibles y stock consolidado.">
   <!-- Tipografías -->
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,27 +12,214 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header class="nav">
-    <strong class="logo">WAIRA & DR</strong>
+  <!-- Header moderno -->
+  <header class="hero-nav">
+    <div class="hero-nav-content">
+      <strong class="logo-large">WAIRA & DR</strong>
+      <p class="tagline">Calzado femenino minimalista</p>
+    </div>
   </header>
 
-  <main class="container">
-    <h1>Catálogo</h1>
+  <!-- Hero section con carrusel -->
+  <section class="hero">
+    <div class="carousel">
+      <div class="carousel-track" id="carouselTrack">
+        <!-- Slide 1 -->
+        <div class="carousel-slide">
+          <img src="assets/img/hero-1.jpg" alt="Colección WAIRA & DR" loading="eager">
+          <div class="carousel-content">
+            <h1 class="carousel-title">Encuentra tu estilo</h1>
+            <p class="carousel-subtitle">Diseños únicos con estética cálida y confort excepcional</p>
+          </div>
+        </div>
+        <!-- Slide 2 -->
+        <div class="carousel-slide">
+          <img src="assets/img/hero-2.jpg" alt="Calzado minimalista" loading="eager">
+          <div class="carousel-content">
+            <h1 class="carousel-title">Elegancia minimalista</h1>
+            <p class="carousel-subtitle">Cada paso, una expresión de tu esencia</p>
+          </div>
+        </div>
+        <!-- Slide 3 -->
+        <div class="carousel-slide">
+          <img src="assets/img/hero-3.jpg" alt="Nuevos diseños" loading="eager">
+          <div class="carousel-content">
+            <h1 class="carousel-title">Confort sin límites</h1>
+            <p class="carousel-subtitle">Calidad artesanal en cada detalle</p>
+          </div>
+        </div>
+      </div>
 
-    <div class="filters">
-      <select id="filtroNombre">
-        <option value="" selected>Nombre (todos)</option>
-      </select>
-      <select id="filtroColor">
-        <option value="" selected>Color (todos)</option>
-      </select>
-      <label class="chk"><input type="checkbox" id="soloDisp"> Solo disponibles</label>
-      <button id="refresh" class="btn">Actualizar</button>
+      <!-- Navegación -->
+      <button class="carousel-nav carousel-nav-prev" aria-label="Anterior">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M15 18l-6-6 6-6"/>
+        </svg>
+      </button>
+      <button class="carousel-nav carousel-nav-next" aria-label="Siguiente">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M9 18l6-6-6-6"/>
+        </svg>
+      </button>
+
+      <!-- Indicadores -->
+      <div class="carousel-indicators" id="carouselIndicators"></div>
     </div>
+  </section>
 
-    <div id="grid" class="grid"></div>
-    <p id="estado" class="estado"></p>
+  <!-- Catálogo -->
+  <main class="catalog-section">
+    <div class="catalog-container">
+      <!-- Filtros modernos -->
+      <div class="filters-modern">
+        <div class="filters-row">
+          <select id="filtroNombre" class="filter-select">
+            <option value="" selected>Todos los modelos</option>
+          </select>
+          <select id="filtroColor" class="filter-select">
+            <option value="" selected>Todos los colores</option>
+          </select>
+          <label class="filter-checkbox">
+            <input type="checkbox" id="soloDisp">
+            <span>Solo disponibles</span>
+          </label>
+        </div>
+        <div class="action-buttons">
+          <button id="refresh" class="btn-refresh btn-secondary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
+            </svg>
+            Actualizar
+          </button>
+          <a href="https://wa.me/51962370684?text=Hola%2C%20tengo%20una%20consulta%20sobre%20sus%20productos" target="_blank" rel="noopener noreferrer" class="btn-refresh btn-primary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" fill="currentColor"/>
+              <path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2.546 20.2c-.157.47.302.928.772.772l3.032-.892A9.958 9.958 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18c-1.706 0-3.305-.535-4.61-1.447l-.33-.233-2.246.66.66-2.246-.233-.33A7.958 7.958 0 014 12c0-4.411 3.589-8 8-8s8 3.589 8 8-3.589 8-8 8z" fill="currentColor"/>
+            </svg>
+            Chatea con nosotros
+          </a>
+        </div>
+      </div>
+
+      <!-- Grid de productos -->
+      <div id="grid" class="grid"></div>
+      <p id="estado" class="catalog-status"></p>
+    </div>
   </main>
+
+  <!-- Footer con redes sociales -->
+  <footer class="footer">
+    <div class="footer-content">
+      <!-- Redes sociales -->
+      <div class="social-links">
+        <a href="https://www.instagram.com/wairadr" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="social-link">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" fill="currentColor"/>
+          </svg>
+        </a>
+        <a href="https://www.linkedin.com/company/wairadr" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="social-link">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" fill="currentColor"/>
+          </svg>
+        </a>
+        <a href="https://wa.me/51962370684" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" class="social-link">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" fill="currentColor"/>
+            <path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2.546 20.2c-.157.47.302.928.772.772l3.032-.892A9.958 9.958 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18c-1.706 0-3.305-.535-4.61-1.447l-.33-.233-2.246.66.66-2.246-.233-.33A7.958 7.958 0 014 12c0-4.411 3.589-8 8-8s8 3.589 8 8-3.589 8-8 8z" fill="currentColor"/>
+          </svg>
+        </a>
+        <a href="https://www.tiktok.com/@wairadr" target="_blank" rel="noopener noreferrer" aria-label="TikTok" class="social-link">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z" fill="currentColor"/>
+          </svg>
+        </a>
+      </div>
+
+      <p class="footer-text">&copy; <span id="year"></span> WAIRA & DR. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Año dinámico en footer
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // ===== CARRUSEL =====
+    const track = document.getElementById('carouselTrack');
+    const slides = track.querySelectorAll('.carousel-slide');
+    const prevBtn = document.querySelector('.carousel-nav-prev');
+    const nextBtn = document.querySelector('.carousel-nav-next');
+    const indicatorsContainer = document.getElementById('carouselIndicators');
+
+    let currentSlide = 0;
+    const totalSlides = slides.length;
+
+    // Crear indicadores
+    for (let i = 0; i < totalSlides; i++) {
+      const indicator = document.createElement('button');
+      indicator.className = 'carousel-indicator';
+      indicator.setAttribute('aria-label', `Ir a slide ${i + 1}`);
+      if (i === 0) indicator.classList.add('active');
+      indicator.addEventListener('click', () => goToSlide(i));
+      indicatorsContainer.appendChild(indicator);
+    }
+
+    const indicators = indicatorsContainer.querySelectorAll('.carousel-indicator');
+
+    function updateCarousel() {
+      track.style.transform = `translateX(-${currentSlide * 100}%)`;
+      indicators.forEach((ind, i) => {
+        ind.classList.toggle('active', i === currentSlide);
+      });
+    }
+
+    function goToSlide(index) {
+      currentSlide = index;
+      updateCarousel();
+    }
+
+    function nextSlide() {
+      currentSlide = (currentSlide + 1) % totalSlides;
+      updateCarousel();
+    }
+
+    function prevSlide() {
+      currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+      updateCarousel();
+    }
+
+    // Event listeners
+    nextBtn.addEventListener('click', nextSlide);
+    prevBtn.addEventListener('click', prevSlide);
+
+    // Auto-play (cada 5 segundos)
+    let autoplayInterval = setInterval(nextSlide, 5000);
+
+    // Pausar autoplay en hover
+    const carousel = document.querySelector('.carousel');
+    carousel.addEventListener('mouseenter', () => {
+      clearInterval(autoplayInterval);
+    });
+    carousel.addEventListener('mouseleave', () => {
+      autoplayInterval = setInterval(nextSlide, 5000);
+    });
+
+    // Soporte para swipe en móvil
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    carousel.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    });
+
+    carousel.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      if (touchStartX - touchEndX > 50) {
+        nextSlide();
+      } else if (touchEndX - touchStartX > 50) {
+        prevSlide();
+      }
+    });
+  </script>
 
   <script src="main.js"></script>
 </body>
