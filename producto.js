@@ -265,6 +265,44 @@ async function renderProduct(g){
   `;
 }
 
+// Función para cargar productos similares aleatorios
+async function loadSimilarProducts(currentSlug, allGroups, maxProducts = 8) {
+  // Filtrar todos los productos excepto el actual
+  const otherProducts = allGroups.filter(g => g.slug !== currentSlug);
+
+  // Mezclar aleatoriamente los productos
+  const shuffled = otherProducts.sort(() => Math.random() - 0.5);
+
+  // Tomar los primeros maxProducts
+  const selectedProducts = shuffled.slice(0, maxProducts);
+
+  // Renderizar en el carrusel
+  const carousel = document.getElementById("similarProductsCarousel");
+  if (!carousel) return;
+
+  carousel.innerHTML = selectedProducts.map(product => {
+    const imgUrl = product.imagenes[0] || "";
+    const productName = [product.nombre, product.color].filter(Boolean).join(" - ");
+    const priceText = product.precio
+      ? `${product.precioDesde ? "Desde " : ""}S/ ${product.precio.toFixed(2)}`
+      : "";
+    const tallasText = product.tallasDisp.length
+      ? `Tallas: ${product.tallasDisp.join(", ")}`
+      : "Consultar disponibilidad";
+
+    return `
+      <a href="producto.html?p=${product.slug}" class="similar-product-card">
+        <img src="${imgUrl}${imgUrl.includes("?")?"&":"?"}v=${CSV_VERSION}" alt="${productName}" class="similar-product-image" loading="lazy">
+        <div class="similar-product-info">
+          <h3 class="similar-product-name">${productName}</h3>
+          ${priceText ? `<p class="similar-product-price">${priceText}</p>` : ''}
+          <p class="similar-product-tallas">${tallasText}</p>
+        </div>
+      </a>
+    `;
+  }).join("");
+}
+
 (async function init(){
   const slug = (getParam("p") || "").toUpperCase();
   if(!slug){ document.getElementById("title").textContent="Producto no especificado"; return; }
@@ -279,6 +317,9 @@ async function renderProduct(g){
       return;
     }
     await renderProduct(g);
+
+    // Cargar productos similares
+    await loadSimilarProducts(slug, groups);
   }catch(e){
     console.error(e);
     document.getElementById("title").textContent = "Error cargando producto";
