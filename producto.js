@@ -7,8 +7,8 @@ const CSV_VERSION = Date.now();
 function sheetUrl(){ return `${SHEET_CSV_BASE}&cacheBust=${CSV_VERSION}`; }
 
 // Número de WhatsApp para pedidos (formato internacional sin espacios ni signos)
-const WHATSAPP_NUMBER = "51962370684"; // +51 962 370 684
-const WHATSAPP_NUMBER_TEXT = "+51 962 370 684"; // formato para mostrar
+const WHATSAPP_NUMBER = "51906396063"; // antes +51 962 370 684
+const WHATSAPP_NUMBER_TEXT = "+51 906 396 063"; // formato para mostrar
 
 // Utils
 function slugify(s=""){
