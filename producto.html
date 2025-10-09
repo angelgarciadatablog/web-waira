@@ -201,6 +201,151 @@
         margin-bottom:16px;
       }
     }
+
+    /* Sección de Instagram */
+    .instagram-section{
+      background:var(--bg);
+      padding:60px 0 80px;
+      border-top:1px solid var(--line);
+    }
+    .instagram-container{
+      max-width:1200px;
+      margin:0 auto;
+      padding:0 24px;
+    }
+    .instagram-title{
+      text-align:center;
+      margin:0 0 40px;
+      color:var(--brand);
+      font-size:clamp(28px, 3vw, 36px);
+    }
+    .instagram-grid{
+      display:grid;
+      grid-template-columns:repeat(4, 1fr);
+      gap:24px;
+    }
+    .instagram-post{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .instagram-embed-wrapper{
+      background:var(--surface);
+      border:1px solid var(--line);
+      border-radius:12px;
+      overflow:hidden;
+      min-height:300px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .instagram-post-title{
+      text-align:center;
+      font-size:14px;
+      font-weight:600;
+      color:var(--ink);
+      margin:0;
+      line-height:1.4;
+    }
+    .instagram-more{
+      background:var(--surface);
+      border:1px solid var(--line);
+      border-radius:12px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px 16px;
+      min-height:300px;
+      text-align:center;
+    }
+    .instagram-more-content{
+      color:var(--ink);
+    }
+    .instagram-more-content svg{
+      width:40px;
+      height:40px;
+      margin:0 auto 12px;
+      opacity:0.9;
+      color:var(--brand);
+    }
+    .instagram-more-content p{
+      font-size:14px;
+      font-weight:600;
+      margin:0 0 16px;
+      color:var(--muted);
+    }
+    .btn-instagram{
+      display:inline-block;
+      padding:10px 20px;
+      background:var(--brand);
+      color:var(--brand-ink);
+      border-radius:8px;
+      font-weight:600;
+      font-size:13px;
+      text-decoration:none;
+      transition:transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow:0 4px 12px rgba(0,0,0,0.1);
+    }
+    .btn-instagram:hover{
+      transform:translateY(-2px);
+      box-shadow:0 6px 20px rgba(0,0,0,0.15);
+    }
+
+    /* Responsive Instagram */
+    @media (max-width:1024px){
+      .instagram-grid{
+        grid-template-columns:repeat(2, 1fr);
+        gap:20px;
+      }
+    }
+    @media (max-width:640px){
+      .instagram-section{
+        padding:40px 0 60px;
+      }
+      .instagram-container{
+        padding:0 16px;
+      }
+      .instagram-title{
+        font-size:24px;
+        margin-bottom:20px;
+      }
+      /* Carrusel horizontal en móvil */
+      .instagram-grid{
+        display:flex;
+        overflow-x:auto;
+        scroll-snap-type:x mandatory;
+        gap:16px;
+        padding:8px 0 16px;
+        -webkit-overflow-scrolling:touch;
+        scrollbar-width:none; /* Firefox */
+      }
+      .instagram-grid::-webkit-scrollbar{
+        display:none; /* Chrome, Safari */
+      }
+      .instagram-post,
+      .instagram-more{
+        flex:0 0 280px;
+        scroll-snap-align:start;
+      }
+      .instagram-post{
+        display:flex;
+        flex-direction:column;
+      }
+      .instagram-post-title{
+        order:-1;
+        font-size:15px;
+        padding:0 4px 12px;
+        font-weight:700;
+      }
+      .instagram-embed-wrapper{
+        min-height:280px;
+        order:1;
+      }
+      .instagram-more{
+        padding:24px 16px;
+        min-height:280px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -274,6 +419,52 @@
     </div>
   </div>
 
+  <!-- Sección de Instagram -->
+  <section class="instagram-section">
+    <div class="instagram-container">
+      <h2 class="instagram-title">Conoce más sobre WAIRA & DR</h2>
+
+      <div class="instagram-grid">
+        <!-- Post 1 -->
+        <div class="instagram-post">
+          <div class="instagram-embed-wrapper">
+            <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DOXFaGkjos7/" data-instgrm-version="14"></blockquote>
+          </div>
+          <h3 class="instagram-post-title">¿Cómo realizar una compra?</h3>
+        </div>
+
+        <!-- Post 2 -->
+        <div class="instagram-post">
+          <div class="instagram-embed-wrapper">
+            <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DMf6hRquYu9/" data-instgrm-version="14"></blockquote>
+          </div>
+          <h3 class="instagram-post-title">¿Qué hay detrás de cada par?</h3>
+        </div>
+
+        <!-- Post 3 -->
+        <div class="instagram-post">
+          <div class="instagram-embed-wrapper">
+            <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DORe0lujqxR/?img_index=2" data-instgrm-version="14"></blockquote>
+          </div>
+          <h3 class="instagram-post-title">¿Qué ofrecemos a empresas?</h3>
+        </div>
+
+        <!-- Botón Ver más -->
+        <div class="instagram-more">
+          <div class="instagram-more-content">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" fill="currentColor"/>
+            </svg>
+            <p>Síguenos en Instagram</p>
+            <a href="https://www.instagram.com/waira.dr/" target="_blank" rel="noopener noreferrer" class="btn-instagram">
+              Ver más
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Footer con redes sociales -->
   <footer class="footer">
     <div class="footer-content">
@@ -343,6 +534,9 @@
       }
     });
   </script>
+
+  <!-- Script de Instagram para cargar embeds -->
+  <script async src="//www.instagram.com/embed.js"></script>
 
   <script src="producto.js"></script>
 </body>
