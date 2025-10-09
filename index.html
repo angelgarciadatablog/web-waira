@@ -67,9 +67,158 @@
     </div>
   </section>
 
+  <!-- Sección de Videos -->
+  <section class="video-section">
+    <div class="video-container">
+      <h2 class="video-section-title">Descubre nuestros diseños</h2>
+      <div class="video-carousel">
+        <button class="video-nav video-nav-prev" aria-label="Anterior">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M15 18l-6-6 6-6"/>
+          </svg>
+        </button>
+
+        <div class="video-thumbnails" id="videoThumbnails">
+          <!-- Video 1 -->
+          <div class="video-thumb" data-video="assets/video/video-1.mp4">
+            <video muted playsinline>
+              <source src="assets/video/video-1.mp4" type="video/mp4">
+            </video>
+            <div class="video-play-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="white">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Video 2 -->
+          <div class="video-thumb" data-video="assets/video/video-2.mp4">
+            <video muted playsinline>
+              <source src="assets/video/video-2.mp4" type="video/mp4">
+            </video>
+            <div class="video-play-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="white">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Video 3 -->
+          <div class="video-thumb" data-video="assets/video/video-3.mp4">
+            <video muted playsinline>
+              <source src="assets/video/video-3.mp4" type="video/mp4">
+            </video>
+            <div class="video-play-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="white">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Video 4 -->
+          <div class="video-thumb" data-video="assets/video/video-4.mp4">
+            <video muted playsinline>
+              <source src="assets/video/video-4.mp4" type="video/mp4">
+            </video>
+            <div class="video-play-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="white">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Video 5 -->
+          <div class="video-thumb" data-video="assets/video/video-5.mp4">
+            <video muted playsinline>
+              <source src="assets/video/video-5.mp4" type="video/mp4">
+            </video>
+            <div class="video-play-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="white">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Video 6 -->
+          <div class="video-thumb" data-video="assets/video/video-6.mp4">
+            <video muted playsinline>
+              <source src="assets/video/video-6.mp4" type="video/mp4">
+            </video>
+            <div class="video-play-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="white">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Video 7 -->
+          <div class="video-thumb" data-video="assets/video/video-7.mp4">
+            <video muted playsinline>
+              <source src="assets/video/video-7.mp4" type="video/mp4">
+            </video>
+            <div class="video-play-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="white">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Video 8 -->
+          <div class="video-thumb" data-video="assets/video/video-8.mp4">
+            <video muted playsinline>
+              <source src="assets/video/video-8.mp4" type="video/mp4">
+            </video>
+            <div class="video-play-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="white">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <button class="video-nav video-nav-next" aria-label="Siguiente">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 18l6-6-6-6"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modal de Video -->
+  <div class="video-modal" id="videoModal">
+    <div class="video-modal-content">
+      <button class="video-modal-close" id="closeModal" aria-label="Cerrar">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </button>
+
+      <button class="video-modal-nav video-modal-prev" id="prevVideo" aria-label="Video anterior">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M15 18l-6-6 6-6"/>
+        </svg>
+      </button>
+
+      <video id="modalVideo" controls playsinline>
+        <source src="" type="video/mp4">
+      </video>
+
+      <button class="video-modal-nav video-modal-next" id="nextVideo" aria-label="Siguiente video">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 18l6-6-6-6"/>
+        </svg>
+      </button>
+
+      <div class="video-pagination" id="videoPagination"></div>
+    </div>
+  </div>
+
   <!-- Catálogo -->
   <main class="catalog-section">
     <div class="catalog-container">
+      <h2 class="catalog-title">Explora nuestro catálogo</h2>
+
       <!-- Filtros modernos -->
       <div class="filters-modern">
         <div class="filters-row">
@@ -217,6 +366,127 @@
         nextSlide();
       } else if (touchEndX - touchStartX > 50) {
         prevSlide();
+      }
+    });
+
+    // ===== CARRUSEL DE VIDEOS =====
+    const videoThumbnails = document.getElementById('videoThumbnails');
+    const videoThumbs = document.querySelectorAll('.video-thumb');
+    const videoModal = document.getElementById('videoModal');
+    const modalVideo = document.getElementById('modalVideo');
+    const closeModal = document.getElementById('closeModal');
+    const prevVideo = document.getElementById('prevVideo');
+    const nextVideo = document.getElementById('nextVideo');
+    const videoPagination = document.getElementById('videoPagination');
+    const videoNavPrev = document.querySelector('.video-nav-prev');
+    const videoNavNext = document.querySelector('.video-nav-next');
+
+    let currentVideoIndex = 0;
+    const totalVideos = videoThumbs.length;
+
+    // Crear puntos de paginación
+    for (let i = 0; i < totalVideos; i++) {
+      const dot = document.createElement('div');
+      dot.className = 'video-pagination-dot';
+      if (i === 0) dot.classList.add('active');
+      dot.addEventListener('click', () => openVideo(i));
+      videoPagination.appendChild(dot);
+    }
+
+    const paginationDots = videoPagination.querySelectorAll('.video-pagination-dot');
+
+    // Reproducir preview al pasar el mouse
+    videoThumbs.forEach((thumb, index) => {
+      const video = thumb.querySelector('video');
+
+      thumb.addEventListener('mouseenter', () => {
+        video.currentTime = 0;
+        video.play().catch(() => {});
+      });
+
+      thumb.addEventListener('mouseleave', () => {
+        video.pause();
+        video.currentTime = 0;
+      });
+
+      thumb.addEventListener('click', () => {
+        openVideo(index);
+      });
+    });
+
+    // Abrir video en modal
+    function openVideo(index) {
+      currentVideoIndex = index;
+      const videoSrc = videoThumbs[index].getAttribute('data-video');
+      modalVideo.querySelector('source').src = videoSrc;
+      modalVideo.load();
+      modalVideo.play();
+      videoModal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      updatePagination();
+    }
+
+    // Cerrar modal
+    function closeVideoModal() {
+      videoModal.classList.remove('active');
+      modalVideo.pause();
+      modalVideo.currentTime = 0;
+      document.body.style.overflow = '';
+    }
+
+    closeModal.addEventListener('click', closeVideoModal);
+    videoModal.addEventListener('click', (e) => {
+      if (e.target === videoModal) {
+        closeVideoModal();
+      }
+    });
+
+    // Navegación de videos
+    function showPrevVideo() {
+      currentVideoIndex = (currentVideoIndex - 1 + totalVideos) % totalVideos;
+      openVideo(currentVideoIndex);
+    }
+
+    function showNextVideo() {
+      currentVideoIndex = (currentVideoIndex + 1) % totalVideos;
+      openVideo(currentVideoIndex);
+    }
+
+    prevVideo.addEventListener('click', showPrevVideo);
+    nextVideo.addEventListener('click', showNextVideo);
+
+    // Actualizar paginación
+    function updatePagination() {
+      paginationDots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === currentVideoIndex);
+      });
+    }
+
+    // Navegación del carrusel con scroll
+    videoNavPrev.addEventListener('click', () => {
+      videoThumbnails.scrollBy({
+        left: -200,
+        behavior: 'smooth'
+      });
+    });
+
+    videoNavNext.addEventListener('click', () => {
+      videoThumbnails.scrollBy({
+        left: 200,
+        behavior: 'smooth'
+      });
+    });
+
+    // Teclas del teclado en modal
+    document.addEventListener('keydown', (e) => {
+      if (!videoModal.classList.contains('active')) return;
+
+      if (e.key === 'Escape') {
+        closeVideoModal();
+      } else if (e.key === 'ArrowLeft') {
+        showPrevVideo();
+      } else if (e.key === 'ArrowRight') {
+        showNextVideo();
       }
     });
   </script>

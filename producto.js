@@ -167,7 +167,40 @@ function setMainImage(url){
   main.src = `${url}${url.includes("?") ? "&" : "?"}v=${CSV_VERSION}`;
 }
 
-function renderProduct(g){
+async function loadLocalImages(slug) {
+  const localImages = [];
+  const basePath = `assets/img/productos/${slug}`;
+  const extensions = ['webp', 'jpg', 'png']; // Formatos soportados
+
+  // Intentar cargar imágenes 2-8 (la 1 viene del Sheet)
+  for (let i = 2; i <= 8; i++) {
+    let found = false;
+
+    // Intentar cada extensión hasta encontrar una que exista
+    for (const ext of extensions) {
+      const imgPath = `${basePath}-${i}.${ext}`;
+      try {
+        // Verificar si la imagen existe haciendo un HEAD request
+        const response = await fetch(imgPath, { method: 'HEAD' });
+        if (response.ok) {
+          localImages.push(imgPath);
+          found = true;
+          break; // Encontramos la imagen, pasar al siguiente número
+        }
+      } catch (e) {
+        // La imagen no existe con esta extensión, probar la siguiente
+        continue;
+      }
+    }
+
+    // Si no encontramos ninguna imagen con este número, asumimos que no hay más
+    if (!found) break;
+  }
+
+  return localImages;
+}
+
+async function renderProduct(g){
   // título
   document.getElementById("title").textContent =
     [g.nombre||"Producto", g.color||""].filter(Boolean).join("-");
@@ -195,9 +228,12 @@ function renderProduct(g){
   document.getElementById("desc").textContent =
     g.descripcion || (g.modelo ? `Modelo: ${g.modelo}` : "—");
 
-  // galería
+  // galería: combinar imágenes del Sheet + imágenes locales
   const thumbs = document.getElementById("thumbs");
-  const imgs = g.imagenes.length ? g.imagenes : [];
+  const sheetImages = g.imagenes.length ? g.imagenes : [];
+  const localImages = await loadLocalImages(g.slug);
+  const imgs = [...sheetImages, ...localImages];
+
   if(imgs.length){
     setMainImage(imgs[0]);
     thumbs.innerHTML = imgs
@@ -242,7 +278,7 @@ function renderProduct(g){
       document.getElementById("title").textContent = "Producto no encontrado";
       return;
     }
-    renderProduct(g);
+    await renderProduct(g);
   }catch(e){
     console.error(e);
     document.getElementById("title").textContent = "Error cargando producto";
