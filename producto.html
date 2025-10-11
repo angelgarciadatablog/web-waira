@@ -202,11 +202,107 @@
       }
     }
 
+    /* Sección de Fortalezas/Trust */
+    .trust-section{
+      background:var(--surface);
+      padding:40px 0;
+    }
+    .trust-container{
+      max-width:1100px;
+      margin:0 auto;
+      padding:0 24px;
+    }
+    .trust-grid{
+      display:grid;
+      grid-template-columns:repeat(4, 1fr);
+      gap:24px;
+    }
+    .trust-item{
+      text-align:center;
+      padding:16px 12px;
+    }
+    .trust-icon{
+      width:52px;
+      height:52px;
+      margin:0 auto 14px;
+      background:var(--brand);
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:white;
+    }
+    .trust-icon svg{
+      width:26px;
+      height:26px;
+    }
+    .trust-title{
+      font-size:15px;
+      font-weight:600;
+      color:var(--brand);
+      margin:0 0 6px;
+    }
+    .trust-description{
+      font-size:13px;
+      color:var(--muted);
+      margin:0;
+      line-height:1.4;
+    }
+
+    @media (max-width:900px){
+      .trust-grid{
+        grid-template-columns:repeat(2, 1fr);
+        gap:20px;
+      }
+    }
+    @media (max-width:640px){
+      .trust-section{
+        padding:30px 0;
+      }
+      .trust-container{
+        padding:0 16px;
+      }
+      .trust-grid{
+        display:flex;
+        overflow-x:auto;
+        scroll-snap-type:x mandatory;
+        gap:16px;
+        padding:8px 0 16px;
+        -webkit-overflow-scrolling:touch;
+        scrollbar-width:none;
+      }
+      .trust-grid::-webkit-scrollbar{
+        display:none;
+      }
+      .trust-item{
+        flex:0 0 calc(50% - 8px);
+        scroll-snap-align:start;
+        padding:20px 16px;
+        background:var(--bg);
+        border-radius:12px;
+      }
+      .trust-icon{
+        width:56px;
+        height:56px;
+        margin:0 auto 16px;
+      }
+      .trust-icon svg{
+        width:28px;
+        height:28px;
+      }
+      .trust-title{
+        font-size:14px;
+        margin-bottom:8px;
+      }
+      .trust-description{
+        font-size:13px;
+      }
+    }
+
     /* Sección de Productos Similares */
     .similar-products-section{
-      background:var(--surface);
+      background:var(--bg);
       padding:60px 0;
-      border-top:1px solid var(--line);
     }
     .similar-products-container{
       max-width:1200px;
@@ -289,9 +385,9 @@
       background:var(--muted);
     }
     .similar-product-card{
-      flex:0 0 280px;
+      flex:0 0 240px;
       scroll-snap-align:start;
-      background:var(--bg);
+      background:var(--surface);
       border:1px solid var(--line);
       border-radius:12px;
       overflow:hidden;
@@ -309,7 +405,7 @@
     }
     .similar-product-image{
       width:100%;
-      height:280px;
+      height:240px;
       object-fit:cover;
       background:var(--champagne);
     }
@@ -340,142 +436,162 @@
 
     @media (min-width:768px){
       .similar-product-card{
-        flex:0 0 300px;
+        flex:0 0 260px;
       }
     }
 
-    /* Sección de Instagram */
-    .instagram-section{
-      background:var(--bg);
-      padding:60px 0 80px;
-      border-top:1px solid var(--line);
+    /* Sección CTA */
+    .cta-section{
+      background:#F5F0E8;
+      padding:50px 0;
+      position:relative;
     }
-    .instagram-container{
-      max-width:1200px;
+    .cta-container{
+      max-width:700px;
       margin:0 auto;
       padding:0 24px;
-    }
-    .instagram-title{
       text-align:center;
-      margin:0 0 40px;
-      color:var(--brand);
-      font-size:clamp(28px, 3vw, 36px);
     }
-    .instagram-grid{
-      display:flex;
-      justify-content:center;
-      gap:24px;
-      flex-wrap:nowrap;
-      max-width:900px;
-      margin:0 auto;
-    }
-    .instagram-post{
-      flex:0 0 280px;
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-    }
-    .instagram-embed-wrapper{
-      background:var(--surface);
-      border:1px solid var(--line);
-      border-radius:12px;
-      overflow:hidden;
-      min-height:300px;
+    .cta-icon{
+      width:48px;
+      height:48px;
+      margin:0 auto 16px;
+      background:var(--brand);
+      border-radius:50%;
       display:flex;
       align-items:center;
       justify-content:center;
+      color:white;
     }
-    .instagram-post-title{
-      text-align:center;
-      font-size:14px;
-      font-weight:600;
-      color:var(--ink);
-      margin:0;
-      line-height:1.4;
+    .cta-icon svg{
+      width:24px;
+      height:24px;
     }
-    .instagram-more{
-      background:var(--surface);
-      border:1px solid var(--line);
-      border-radius:12px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:24px 16px;
-      min-height:300px;
-      width:320px;
-      justify-self:center;
-      text-align:center;
-    }
-    .instagram-more-content{
-      color:var(--ink);
-    }
-    .instagram-more-content svg{
-      width:40px;
-      height:40px;
-      margin:0 auto 12px;
-      opacity:0.9;
+    .cta-title{
+      font-size:clamp(22px, 3vw, 28px);
       color:var(--brand);
-    }
-    .instagram-more-content p{
-      font-size:14px;
+      margin:0 0 10px;
       font-weight:600;
-      margin:0 0 16px;
+      line-height:1.3;
+    }
+    .cta-subtitle{
+      font-size:clamp(14px, 1.8vw, 16px);
       color:var(--muted);
+      margin:0 0 24px;
+      line-height:1.5;
+      max-width:500px;
+      margin-left:auto;
+      margin-right:auto;
     }
-    .btn-instagram{
-      display:inline-block;
-      padding:10px 20px;
+    .cta-buttons{
+      display:flex;
+      gap:12px;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+    .btn-cta-primary{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:12px 24px;
       background:var(--brand);
       color:var(--brand-ink);
+      border:none;
       border-radius:8px;
+      font-size:15px;
       font-weight:600;
-      font-size:13px;
       text-decoration:none;
-      transition:transform 0.2s ease, box-shadow 0.2s ease;
-      box-shadow:0 4px 12px rgba(0,0,0,0.1);
+      cursor:pointer;
+      transition:all 0.2s ease;
+      box-shadow:0 2px 8px rgba(0,0,0,0.08);
     }
-    .btn-instagram:hover{
+    .btn-cta-primary:hover{
       transform:translateY(-2px);
-      box-shadow:0 6px 20px rgba(0,0,0,0.15);
+      box-shadow:0 4px 12px rgba(0,0,0,0.12);
+    }
+    .btn-cta-primary svg{
+      width:18px;
+      height:18px;
+    }
+    .btn-cta-secondary{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:12px 24px;
+      background:white;
+      color:var(--brand);
+      border:1px solid var(--line);
+      border-radius:8px;
+      font-size:15px;
+      font-weight:500;
+      text-decoration:none;
+      cursor:pointer;
+      transition:all 0.2s ease;
+    }
+    .btn-cta-secondary:hover{
+      border-color:var(--brand);
+      background:var(--surface);
+      transform:translateY(-2px);
+    }
+    .btn-cta-secondary svg{
+      width:18px;
+      height:18px;
+    }
+    .cta-features{
+      display:flex;
+      gap:24px;
+      justify-content:center;
+      margin-top:32px;
+      flex-wrap:wrap;
+    }
+    .cta-feature{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      color:var(--muted);
+      font-size:13px;
+      font-weight:500;
+    }
+    .cta-feature svg{
+      width:16px;
+      height:16px;
+      color:var(--brand);
+      flex-shrink:0;
     }
 
-    /* Responsive Instagram */
     @media (max-width:640px){
-      .instagram-section{
-        padding:40px 0 60px;
+      .cta-section{
+        padding:40px 0;
       }
-      .instagram-container{
-        padding:0 16px;
+      .cta-container{
+        padding:0 20px;
       }
-      .instagram-title{
-        font-size:24px;
+      .cta-title{
+        font-size:20px;
+      }
+      .cta-subtitle{
+        font-size:14px;
         margin-bottom:20px;
       }
-      /* Carrusel horizontal en móvil */
-      .instagram-grid{
-        display:flex;
-        justify-content:flex-start;
-        flex-wrap:nowrap;
-        overflow-x:auto;
-        scroll-snap-type:x mandatory;
-        gap:16px;
-        padding:8px 0 16px;
-        -webkit-overflow-scrolling:touch;
-        scrollbar-width:none; /* Firefox */
-      }
-      .instagram-grid::-webkit-scrollbar{
-        display:none; /* Chrome, Safari */
-      }
-      .instagram-post{
-        flex:0 0 280px;
-        scroll-snap-align:start;
-        display:flex;
+      .cta-buttons{
         flex-direction:column;
+        align-items:stretch;
+        gap:10px;
       }
-      .instagram-embed-wrapper{
-        min-height:280px;
+      .btn-cta-primary,
+      .btn-cta-secondary{
+        justify-content:center;
+        padding:11px 20px;
+        font-size:14px;
+      }
+      .cta-features{
+        flex-direction:column;
+        gap:12px;
+        align-items:center;
+        margin-top:24px;
       }
     }
+
   </style>
 </head>
 <body>
@@ -551,6 +667,59 @@
     </div>
   </div>
 
+  <!-- Sección de Fortalezas -->
+  <section class="trust-section">
+    <div class="trust-container">
+      <div class="trust-grid">
+        <!-- Fortaleza 1 -->
+        <div class="trust-item">
+          <div class="trust-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+          </div>
+          <h3 class="trust-title">Calidad garantizada</h3>
+          <p class="trust-description">Materiales premium y acabados artesanales en cada par</p>
+        </div>
+
+        <!-- Fortaleza 2 -->
+        <div class="trust-item">
+          <div class="trust-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+          </div>
+          <h3 class="trust-title">Envíos seguros</h3>
+          <p class="trust-description">Entregas a todo el Perú con seguimiento completo</p>
+        </div>
+
+        <!-- Fortaleza 3 -->
+        <div class="trust-item">
+          <div class="trust-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+          </div>
+          <h3 class="trust-title">Asesoría personalizada</h3>
+          <p class="trust-description">Te ayudamos a elegir la talla y modelo perfecto</p>
+        </div>
+
+        <!-- Fortaleza 4 -->
+        <div class="trust-item">
+          <div class="trust-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+            </svg>
+          </div>
+          <h3 class="trust-title">Pago seguro</h3>
+          <p class="trust-description">Múltiples opciones de pago para tu comodidad</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Sección de Productos Similares -->
   <section class="similar-products-section">
     <div class="similar-products-container">
@@ -573,31 +742,205 @@
     </div>
   </section>
 
-  <!-- Sección de Instagram -->
-  <section class="instagram-section">
-    <div class="instagram-container">
-      <h2 class="instagram-title">Conoce más sobre WAIRA & DR</h2>
+  <!-- Sección de Videos -->
+  <section class="video-section">
+    <div class="video-container">
+      <h2 class="video-section-title">Descubre nuestros diseños</h2>
+      <div class="video-carousel">
+        <button class="video-nav video-nav-prev" aria-label="Anterior">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M15 18l-6-6 6-6"/>
+          </svg>
+        </button>
 
-      <div class="instagram-grid">
-        <!-- Post 1 -->
-        <div class="instagram-post">
-          <div class="instagram-embed-wrapper">
-            <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DOXFaGkjos7/" data-instgrm-version="14"></blockquote>
+        <div class="video-thumbnails" id="videoThumbnails">
+          <!-- Video 1 -->
+          <div class="video-thumb" data-video="assets/video/video-1.mp4">
+            <video muted playsinline>
+              <source src="assets/video/video-1.mp4" type="video/mp4">
+            </video>
+            <div class="video-play-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="white">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Video 2 -->
+          <div class="video-thumb" data-video="assets/video/video-2.mp4">
+            <video muted playsinline>
+              <source src="assets/video/video-2.mp4" type="video/mp4">
+            </video>
+            <div class="video-play-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="white">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Video 3 -->
+          <div class="video-thumb" data-video="assets/video/video-3.mp4">
+            <video muted playsinline>
+              <source src="assets/video/video-3.mp4" type="video/mp4">
+            </video>
+            <div class="video-play-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="white">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Video 4 -->
+          <div class="video-thumb" data-video="assets/video/video-4.mp4">
+            <video muted playsinline>
+              <source src="assets/video/video-4.mp4" type="video/mp4">
+            </video>
+            <div class="video-play-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="white">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Video 5 -->
+          <div class="video-thumb" data-video="assets/video/video-5.mp4">
+            <video muted playsinline>
+              <source src="assets/video/video-5.mp4" type="video/mp4">
+            </video>
+            <div class="video-play-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="white">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Video 6 -->
+          <div class="video-thumb" data-video="assets/video/video-6.mp4">
+            <video muted playsinline>
+              <source src="assets/video/video-6.mp4" type="video/mp4">
+            </video>
+            <div class="video-play-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="white">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Video 7 -->
+          <div class="video-thumb" data-video="assets/video/video-7.mp4">
+            <video muted playsinline>
+              <source src="assets/video/video-7.mp4" type="video/mp4">
+            </video>
+            <div class="video-play-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="white">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Video 8 -->
+          <div class="video-thumb" data-video="assets/video/video-8.mp4">
+            <video muted playsinline>
+              <source src="assets/video/video-8.mp4" type="video/mp4">
+            </video>
+            <div class="video-play-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="white">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+            </div>
           </div>
         </div>
 
-        <!-- Post 2 -->
-        <div class="instagram-post">
-          <div class="instagram-embed-wrapper">
-            <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DMf6hRquYu9/" data-instgrm-version="14"></blockquote>
-          </div>
-        </div>
+        <button class="video-nav video-nav-next" aria-label="Siguiente">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 18l6-6-6-6"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </section>
 
-        <!-- Post 3 -->
-        <div class="instagram-post">
-          <div class="instagram-embed-wrapper">
-            <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DORe0lujqxR/?img_index=2" data-instgrm-version="14"></blockquote>
-          </div>
+  <!-- Modal de Video -->
+  <div class="video-modal" id="videoModal">
+    <div class="video-modal-content">
+      <button class="video-modal-close" id="closeModal" aria-label="Cerrar">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </button>
+
+      <button class="video-modal-nav video-modal-prev" id="prevVideo" aria-label="Video anterior">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M15 18l-6-6 6-6"/>
+        </svg>
+      </button>
+
+      <video id="modalVideo" controls playsinline>
+        <source src="" type="video/mp4">
+      </video>
+
+      <button class="video-modal-nav video-modal-next" id="nextVideo" aria-label="Siguiente video">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 18l6-6-6-6"/>
+        </svg>
+      </button>
+
+      <div class="video-pagination" id="videoPagination"></div>
+    </div>
+  </div>
+
+  <!-- Sección CTA -->
+  <section class="cta-section">
+    <div class="cta-container">
+      <div class="cta-icon">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" fill="currentColor"/>
+          <path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2.546 20.2c-.157.47.302.928.772.772l3.032-.892A9.958 9.958 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18c-1.706 0-3.305-.535-4.61-1.447l-.33-.233-2.246.66.66-2.246-.233-.33A7.958 7.958 0 014 12c0-4.411 3.589-8 8-8s8 3.589 8 8-3.589 8-8 8z" fill="currentColor"/>
+        </svg>
+      </div>
+
+      <h2 class="cta-title">¿Te enamoraste de este diseño?</h2>
+      <p class="cta-subtitle">Contáctanos por WhatsApp y recibe asesoría personalizada sobre tallas, disponibilidad y envíos. Estamos aquí para ayudarte a encontrar el calzado perfecto.</p>
+
+      <div class="cta-buttons">
+        <a href="https://wa.me/51906396063?text=Hola%2C%20me%20interesa%20este%20producto" target="_blank" rel="noopener noreferrer" class="btn-cta-primary">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" fill="currentColor"/>
+            <path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2.546 20.2c-.157.47.302.928.772.772l3.032-.892A9.958 9.958 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18c-1.706 0-3.305-.535-4.61-1.447l-.33-.233-2.246.66.66-2.246-.233-.33A7.958 7.958 0 014 12c0-4.411 3.589-8 8-8s8 3.589 8 8-3.589 8-8 8z" fill="currentColor"/>
+          </svg>
+          Chatear ahora
+        </a>
+        <a href="./" class="btn-cta-secondary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+            <rect x="3" y="3" width="7" height="7" rx="1"/>
+            <rect x="14" y="3" width="7" height="7" rx="1"/>
+            <rect x="14" y="14" width="7" height="7" rx="1"/>
+            <rect x="3" y="14" width="7" height="7" rx="1"/>
+          </svg>
+          Ver más modelos
+        </a>
+      </div>
+
+      <div class="cta-features">
+        <div class="cta-feature">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+          Atención personalizada
+        </div>
+        <div class="cta-feature">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          Respuesta rápida
+        </div>
+        <div class="cta-feature">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+          Envíos a todo el Perú
         </div>
       </div>
     </div>
@@ -709,10 +1052,128 @@
       // Actualizar al cargar productos
       setTimeout(updateNavButtons, 500);
     }
-  </script>
 
-  <!-- Script de Instagram para cargar embeds -->
-  <script async src="//www.instagram.com/embed.js"></script>
+    // ===== CARRUSEL DE VIDEOS =====
+    const videoThumbnails = document.getElementById('videoThumbnails');
+    const videoThumbs = document.querySelectorAll('.video-thumb');
+    const videoModal = document.getElementById('videoModal');
+    const modalVideo = document.getElementById('modalVideo');
+    const closeModal = document.getElementById('closeModal');
+    const prevVideo = document.getElementById('prevVideo');
+    const nextVideo = document.getElementById('nextVideo');
+    const videoPagination = document.getElementById('videoPagination');
+    const videoNavPrev = document.querySelector('.video-nav-prev');
+    const videoNavNext = document.querySelector('.video-nav-next');
+
+    let currentVideoIndex = 0;
+    const totalVideos = videoThumbs.length;
+
+    // Crear puntos de paginación
+    for (let i = 0; i < totalVideos; i++) {
+      const dot = document.createElement('div');
+      dot.className = 'video-pagination-dot';
+      if (i === 0) dot.classList.add('active');
+      dot.addEventListener('click', () => openVideo(i));
+      videoPagination.appendChild(dot);
+    }
+
+    const paginationDots = videoPagination.querySelectorAll('.video-pagination-dot');
+
+    // Reproducir preview al pasar el mouse
+    videoThumbs.forEach((thumb, index) => {
+      const video = thumb.querySelector('video');
+
+      thumb.addEventListener('mouseenter', () => {
+        video.currentTime = 0;
+        video.play().catch(() => {});
+      });
+
+      thumb.addEventListener('mouseleave', () => {
+        video.pause();
+        video.currentTime = 0;
+      });
+
+      thumb.addEventListener('click', () => {
+        openVideo(index);
+      });
+    });
+
+    // Abrir video en modal
+    function openVideo(index) {
+      currentVideoIndex = index;
+      const videoSrc = videoThumbs[index].getAttribute('data-video');
+      modalVideo.querySelector('source').src = videoSrc;
+      modalVideo.load();
+      modalVideo.play();
+      videoModal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      updateVideoPagination();
+    }
+
+    // Cerrar modal
+    function closeVideoModal() {
+      videoModal.classList.remove('active');
+      modalVideo.pause();
+      modalVideo.currentTime = 0;
+      document.body.style.overflow = '';
+    }
+
+    closeModal.addEventListener('click', closeVideoModal);
+    videoModal.addEventListener('click', (e) => {
+      if (e.target === videoModal) {
+        closeVideoModal();
+      }
+    });
+
+    // Navegación de videos
+    function showPrevVideo() {
+      currentVideoIndex = (currentVideoIndex - 1 + totalVideos) % totalVideos;
+      openVideo(currentVideoIndex);
+    }
+
+    function showNextVideo() {
+      currentVideoIndex = (currentVideoIndex + 1) % totalVideos;
+      openVideo(currentVideoIndex);
+    }
+
+    prevVideo.addEventListener('click', showPrevVideo);
+    nextVideo.addEventListener('click', showNextVideo);
+
+    // Actualizar paginación
+    function updateVideoPagination() {
+      paginationDots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === currentVideoIndex);
+      });
+    }
+
+    // Navegación del carrusel con scroll
+    videoNavPrev.addEventListener('click', () => {
+      videoThumbnails.scrollBy({
+        left: -200,
+        behavior: 'smooth'
+      });
+    });
+
+    videoNavNext.addEventListener('click', () => {
+      videoThumbnails.scrollBy({
+        left: 200,
+        behavior: 'smooth'
+      });
+    });
+
+    // Teclas del teclado en modal
+    document.addEventListener('keydown', (e) => {
+      if (!videoModal.classList.contains('active')) return;
+
+      if (e.key === 'Escape') {
+        closeVideoModal();
+      } else if (e.key === 'ArrowLeft') {
+        showPrevVideo();
+      } else if (e.key === 'ArrowRight') {
+        showNextVideo();
+      }
+    });
+  </script>
 
   <script src="producto.js"></script>
 </body>
