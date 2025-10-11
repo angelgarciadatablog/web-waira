@@ -44,10 +44,11 @@ function csvToObjects(csv){
   return rows.map(cols=>{
     const o={};
     headers.forEach((h,i)=>o[h]=(cols[i]??"").trim());
-    o.taco_cm  = Number(o.taco_cm  || 0);
-    o.talla    = Number(o.talla    || 0);
-    o.precio   = Number(o.precio   || 0);
-    o.cantidad = Number(o.cantidad || 0);
+    o.taco_cm    = Number(o.taco_cm    || 0);
+    o.talla      = Number(o.talla      || 0);
+    o.precio     = Number(o.precio     || 0);
+    o.precio_sale = Number(o.precio_sale || 0);
+    o.cantidad   = Number(o.cantidad   || 0);
 
     const est = (o.estado || "").trim().toUpperCase();
     if (est.startsWith("DISP")) o.estado = "DISPONIBLE";
@@ -128,11 +129,10 @@ function agruparNombreColor(items){
     if(!nameKey || !colorKey) continue;
     const key = `${nameKey}|${colorKey}`;
     if(!map.has(key)){
-      map.set(key, { nombre:it.nombre, color:it.color, modelo:it.modelo, items:[], imagenes:new Set() });
+      map.set(key, { nombre:it.nombre, color:it.color, modelo:it.modelo, items:[] });
     }
     const g = map.get(key);
     g.items.push(it);
-    if (it.imagen) g.imagenes.add(it.imagen);
   }
   const groups=[];
   for(const g of map.values()){
@@ -141,10 +141,19 @@ function agruparNombreColor(items){
     const tallasDisp = Array.from(new Set(disponibles.map(x=>x.talla).filter(n=>Number.isFinite(n)&&n>0))).sort((a,b)=>a-b);
     const tallasAgot = Array.from(new Set(agotadas.map(x=>x.talla).filter(n=>Number.isFinite(n)&&n>0))).sort((a,b)=>a-b);
     const stockTotal = g.items.reduce((s,x)=>s+(Number(x.cantidad)||0),0);
+
+    // Precios normales
     const precios = Array.from(new Set(g.items.map(x=>Number(x.precio)||0).filter(v=>v>0)));
     let precio=null, precioDesde=false;
     if(precios.length===1) precio=precios[0];
     else if(precios.length>1){ precio=Math.min(...precios); precioDesde=true; }
+
+    // Precios de oferta (precio_sale)
+    const preciosSale = Array.from(new Set(g.items.map(x=>Number(x.precio_sale)||0).filter(v=>v>0)));
+    let precioSale=null, precioSaleDesde=false;
+    if(preciosSale.length===1) precioSale=preciosSale[0];
+    else if(preciosSale.length>1){ precioSale=Math.min(...preciosSale); precioSaleDesde=true; }
+
     const tacos = Array.from(new Set(g.items.map(x=>Number(x.taco_cm)||0).filter(v=>v>0))).sort((a,b)=>a-b);
     let tacoText="";
     if(tacos.length===1) tacoText=`taco ${tacos[0]}`;
@@ -154,8 +163,9 @@ function agruparNombreColor(items){
       nombre:g.nombre, color:g.color, modelo:g.modelo,
       descripcion: g.items.find(x=>x.descripcion)?.descripcion || "",
       tallasDisp, tallasAgot, stockTotal,
-      precio, precioDesde, tacoText,
-      imagenes: Array.from(g.imagenes)
+      precio, precioDesde,
+      precioSale, precioSaleDesde,
+      tacoText
     });
   }
   return groups;
@@ -167,23 +177,24 @@ function setMainImage(url){
   main.src = `${url}${url.includes("?") ? "&" : "?"}v=${CSV_VERSION}`;
 }
 
-async function loadLocalImages(slug) {
-  const localImages = [];
+async function loadProductImages(slug) {
+  const images = [];
   const basePath = `assets/img/productos/${slug}`;
-  const extensions = ['webp', 'jpg', 'png']; // Formatos soportados
+  const extensions = ['webp', 'jpg', 'png', 'jpeg']; // Formatos soportados
 
-  // Intentar cargar imágenes 2-8 (la 1 viene del Sheet)
-  for (let i = 2; i <= 8; i++) {
+  // Intentar cargar imágenes 1-8 desde la carpeta del producto
+  // La imagen 1 será la de portada, las demás (2-8) son galería adicional
+  for (let i = 1; i <= 8; i++) {
     let found = false;
 
     // Intentar cada extensión hasta encontrar una que exista
     for (const ext of extensions) {
-      const imgPath = `${basePath}-${i}.${ext}`;
+      const imgPath = `${basePath}/${i}.${ext}`;
       try {
         // Verificar si la imagen existe haciendo un HEAD request
         const response = await fetch(imgPath, { method: 'HEAD' });
         if (response.ok) {
-          localImages.push(imgPath);
+          images.push(imgPath);
           found = true;
           break; // Encontramos la imagen, pasar al siguiente número
         }
@@ -197,7 +208,7 @@ async function loadLocalImages(slug) {
     if (!found) break;
   }
 
-  return localImages;
+  return images;
 }
 
 async function renderProduct(g){
@@ -205,10 +216,17 @@ async function renderProduct(g){
   document.getElementById("title").textContent =
     [g.nombre||"Producto", g.color||""].filter(Boolean).join("-");
 
-  // precio
+  // precio con lógica de promoción
   const price = document.getElementById("price");
-  price.textContent = "";
-  if(Number.isFinite(g.precio) && g.precio>0){
+  price.innerHTML = "";
+  if (Number.isFinite(g.precioSale) && g.precioSale > 0) {
+    // Tiene precio en oferta - mostrar precio sale grande y precio original tachado
+    price.innerHTML = `
+      <div class="price-sale-large">${g.precioSaleDesde ? "Desde " : ""}S/ ${g.precioSale.toFixed(2)}</div>
+      <div class="price-original-large">${g.precioDesde ? "Desde " : ""}S/ ${g.precio.toFixed(2)}</div>
+    `;
+  } else if (Number.isFinite(g.precio) && g.precio > 0) {
+    // Precio normal sin oferta
     price.textContent = `${g.precioDesde ? "Desde " : ""}S/ ${g.precio.toFixed(2)}`;
   }
 
@@ -228,11 +246,9 @@ async function renderProduct(g){
   document.getElementById("desc").textContent =
     g.descripcion || (g.modelo ? `Modelo: ${g.modelo}` : "—");
 
-  // galería: combinar imágenes del Sheet + imágenes locales
+  // galería: cargar todas las imágenes desde la carpeta del producto
   const thumbs = document.getElementById("thumbs");
-  const sheetImages = g.imagenes.length ? g.imagenes : [];
-  const localImages = await loadLocalImages(g.slug);
-  const imgs = [...sheetImages, ...localImages];
+  const imgs = await loadProductImages(g.slug);
 
   if(imgs.length){
     setMainImage(imgs[0]);
@@ -281,7 +297,8 @@ async function loadSimilarProducts(currentSlug, allGroups, maxProducts = 8) {
   if (!carousel) return;
 
   carousel.innerHTML = selectedProducts.map(product => {
-    const imgUrl = product.imagenes[0] || "";
+    // Construir la ruta de la imagen 1 (portada) desde la carpeta del producto
+    const imgUrl = `assets/img/productos/${product.slug}/1.webp`; // Por defecto usamos webp, el navegador fallará gracefully si no existe
     const productName = [product.nombre, product.color].filter(Boolean).join(" - ");
     const priceText = product.precio
       ? `${product.precioDesde ? "Desde " : ""}S/ ${product.precio.toFixed(2)}`
@@ -292,7 +309,7 @@ async function loadSimilarProducts(currentSlug, allGroups, maxProducts = 8) {
 
     return `
       <a href="producto.html?p=${product.slug}" class="similar-product-card">
-        <img src="${imgUrl}${imgUrl.includes("?")?"&":"?"}v=${CSV_VERSION}" alt="${productName}" class="similar-product-image" loading="lazy">
+        <img src="${imgUrl}?v=${CSV_VERSION}" alt="${productName}" class="similar-product-image" loading="lazy" onerror="this.style.display='none'">
         <div class="similar-product-info">
           <h3 class="similar-product-name">${productName}</h3>
           ${priceText ? `<p class="similar-product-price">${priceText}</p>` : ''}

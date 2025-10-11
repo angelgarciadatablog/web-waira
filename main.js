@@ -63,10 +63,11 @@ function csvToObjects(csv){
     headers.forEach((h,i)=>o[h]=(cols[i]??"").trim());
 
     // normaliza tipos/valores
-    o.taco_cm  = Number(o.taco_cm  || 0);
-    o.talla    = Number(o.talla    || 0);
-    o.precio   = Number(o.precio   || 0);
-    o.cantidad = Number(o.cantidad || 0);
+    o.taco_cm     = Number(o.taco_cm     || 0);
+    o.talla       = Number(o.talla       || 0);
+    o.precio      = Number(o.precio      || 0);
+    o.precio_sale = Number(o.precio_sale || 0);
+    o.cantidad    = Number(o.cantidad    || 0);
 
     // estado → canon (solo usamos estado para disponibilidad)
     const est = (o.estado || "").trim().toUpperCase();
@@ -79,9 +80,6 @@ function csvToObjects(csv){
     o.color  = (o.color  || "").trim().toUpperCase();
     o.nombre = (o.nombre || "").trim();
     o.modelo = (o.modelo || "").trim();
-
-    // imagen (puede venir vacío)
-    o.imagen = (o.imagen || "").trim();
 
     return o;
   });
@@ -158,13 +156,11 @@ function agruparNombreColor(items){
         nombre: it.nombre,
         color: it.color,
         modelo: it.modelo,
-        items: [],
-        imagen: "",      // tomaremos la primera no vacía
+        items: []
       });
     }
     const g = map.get(key);
     g.items.push(it);
-    if (!g.imagen && it.imagen) g.imagen = it.imagen;
   }
 
   const out = [];
@@ -195,6 +191,14 @@ function agruparNombreColor(items){
     if (precios.length === 1) { precio = precios[0]; }
     else if (precios.length > 1) { precio = Math.min(...precios); precioDesde = true; }
 
+    // precios de oferta (precio_sale)
+    const preciosSale = Array.from(new Set(
+      g.items.map(x => Number(x.precio_sale)||0).filter(v => v>0)
+    ));
+    let precioSale = null, precioSaleDesde = false;
+    if (preciosSale.length === 1) { precioSale = preciosSale[0]; }
+    else if (preciosSale.length > 1) { precioSale = Math.min(...preciosSale); precioSaleDesde = true; }
+
     // tacos: único o lista "taco 2,3" (sin "cm")
     const tacos = Array.from(new Set(
       g.items.map(x => Number(x.taco_cm)||0).filter(v => v>0)
@@ -208,13 +212,14 @@ function agruparNombreColor(items){
       nombre: g.nombre,
       color: g.color,
       modelo: g.modelo,
-      imagen: g.imagen || "",
       tallasDisp,
       tallasAgot,
       disponible: disponibleGrupo,
       stockTotal,
       precio,
       precioDesde,
+      precioSale,
+      precioSaleDesde,
       tacoText
     });
   }
@@ -306,13 +311,26 @@ function render(){
 
   groupsFiltrados.forEach(g=>{
     const agotadoGrupo = !g.disponible;
-    const precioHtml = (Number.isFinite(g.precio) && g.precio>0)
-      ? `<div style="margin-top:8px;font-weight:600">${g.precioDesde ? "Desde " : ""}S/ ${g.precio.toFixed(2)}</div>`
-      : "";
+
+    // Lógica de precios con promoción
+    let precioHtml = "";
+    if (Number.isFinite(g.precioSale) && g.precioSale > 0) {
+      // Tiene precio en oferta
+      precioHtml = `
+        <div style="margin-top:8px">
+          <div class="price-sale">${g.precioSaleDesde ? "Desde " : ""}S/ ${g.precioSale.toFixed(2)}</div>
+          <div class="price-original">${g.precioDesde ? "Desde " : ""}S/ ${g.precio.toFixed(2)}</div>
+        </div>
+      `;
+    } else if (Number.isFinite(g.precio) && g.precio > 0) {
+      // Precio normal sin oferta
+      precioHtml = `<div style="margin-top:8px;font-weight:600">${g.precioDesde ? "Desde " : ""}S/ ${g.precio.toFixed(2)}</div>`;
+    }
+
     const tacoHtml = g.tacoText ? `<div style="margin-top:4px">${g.tacoText}</div>` : "";
-    const imgUrl = g.imagen
-      ? `${g.imagen}${g.imagen.includes("?") ? "&" : "?"}v=${CSV_VERSION}`
-      : "";
+
+    // Construir la ruta de la imagen 1 (portada) desde la carpeta del producto
+    const imgUrl = `assets/img/productos/${g.slug}/1.webp?v=${CSV_VERSION}`;
 
     const chips = []
       .concat(g.tallasDisp.map(t => `<span class="chip">${t}</span>`))
@@ -328,7 +346,7 @@ function render(){
       <div class="body">
         <h4>${[g.nombre || "Modelo", g.color || ""].filter(Boolean).join('-')}</h4>
       </div>
-      ${imgUrl ? `<img src="${imgUrl}" alt="${g.nombre} ${g.color}" loading="lazy">` : ""}
+      <img src="${imgUrl}" alt="${g.nombre} ${g.color}" loading="lazy" onerror="this.style.display='none'">
       <div class="body">
         ${precioHtml}
         ${tacoHtml}
