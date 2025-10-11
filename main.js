@@ -73,7 +73,7 @@ function csvToObjects(csv){
     const est = (o.estado || "").trim().toUpperCase();
     if (est.startsWith("DISP")) o.estado = "DISPONIBLE";
     else if (est.startsWith("AGOT")) o.estado = "AGOTADO";
-    else if (est === "NO_FABRICADO") o.estado = "NO_FABRICADO";
+    else if (est === "OCULTO") o.estado = "OCULTO";
     else o.estado = est || "";
 
     // color y nombre
@@ -167,7 +167,7 @@ function agruparNombreColor(items){
   for (const g of map.values()){
     // tallas por estado (solo por estado, no por cantidad)
     const disponibles = g.items.filter(x => x.estado === "DISPONIBLE");
-    const agotadas    = g.items.filter(x => x.estado !== "DISPONIBLE" && x.estado !== "NO_FABRICADO");
+    const agotadas    = g.items.filter(x => x.estado !== "DISPONIBLE" && x.estado !== "OCULTO");
 
     const tallasDisp = Array.from(new Set(
       disponibles.map(x => x.talla).filter(n => Number.isFinite(n) && n > 0)
@@ -262,8 +262,8 @@ async function cargarCatalogo(){
     estado.textContent = "Cargando catálogo…";
     const rows = await fetchCSV(sheetUrl());
 
-    // excluir NO_FABRICADO
-    rowsRaw = rows.filter(r => (r.estado || "") !== "NO_FABRICADO");
+    // excluir OCULTO
+    rowsRaw = rows.filter(r => (r.estado || "") !== "OCULTO");
 
     if (firstLoad){
       if(filtroNombre) filtroNombre.value = "";
