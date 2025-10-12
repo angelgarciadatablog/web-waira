@@ -158,12 +158,16 @@
       justify-content:center;
       border-radius:12px;
       background:var(--bg);
+      padding:12px;
     }
     .size-guide-image-container img{
-      width:100%;
+      max-width:100%;
+      width:auto;
       height:auto;
+      max-height:100%;
       display:block;
       border-radius:8px;
+      object-fit:contain;
     }
     .size-guide-modal-close{
       position:absolute;
@@ -194,11 +198,15 @@
         padding:16px;
       }
       .size-guide-modal-content{
-        padding:20px 16px;
+        padding:20px;
       }
       .size-guide-modal h2{
         font-size:20px;
         margin-bottom:16px;
+      }
+      .size-guide-image-container{
+        padding:8px;
+        max-height:65vh;
       }
     }
 
@@ -662,7 +670,7 @@
       </button>
       <h2>Guía de tallas</h2>
       <div class="size-guide-image-container">
-        <img src="assets/img/guia-tallas.jpg" alt="Guía de tallas WAIRA & DR" id="sizeGuideImage">
+        <img src="assets/img/guia-tallas.webp" alt="Guía de tallas WAIRA & DR" id="sizeGuideImage">
       </div>
     </div>
   </div>
