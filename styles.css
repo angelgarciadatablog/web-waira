@@ -666,7 +666,7 @@ img{ max-width:100%; height:auto; display:block; }
   overflow:hidden;
   cursor:pointer;
   transition:transform 0.3s ease, box-shadow 0.3s ease;
-  background:#000; /* Fondo negro mientras carga el video */
+  background:var(--champagne); /* Fondo suave mientras carga el video */
 }
 .video-thumb:hover{
   transform:scale(1.05);
@@ -677,6 +677,7 @@ img{ max-width:100%; height:auto; display:block; }
   height:100%;
   object-fit:cover;
   pointer-events:none;
+  background:var(--champagne); /* Fondo para el video también */
 }
 .video-play-icon{
   position:absolute;
@@ -870,7 +871,7 @@ img{ max-width:100%; height:auto; display:block; }
     padding:16px;
   }
   .video-modal-content{
-    max-width:100%;
+    max-width:calc(100% - 32px); /* Resta padding para margen derecho */
     border-radius:12px;
   }
   .video-modal-nav{

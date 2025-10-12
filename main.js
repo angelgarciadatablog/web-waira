@@ -23,7 +23,10 @@ const grid = document.getElementById("grid");
 const estado = document.getElementById("estado");
 const filtroNombre = document.getElementById("filtroNombre");
 const filtroColor = document.getElementById("filtroColor");
+const filtroTaco = document.getElementById("filtroTaco");
 const soloDisp = document.getElementById("soloDisp");
+
+// Botón actualizar comentado - mantener lógica para uso futuro
 document.getElementById("refresh")?.addEventListener("click", () => {
   // Limpiar caché manualmente
   localStorage.removeItem('waira_catalog_cache');
@@ -256,6 +259,25 @@ function populateColorFilter(items){
   if (prev && colors.includes(prev)) filtroColor.value = prev;
 }
 
+function populateTacoFilter(items){
+  if(!filtroTaco) return;
+  const prev = filtroTaco.value;
+  // Extraer valores únicos de taco del campo tacoText
+  const tacos = new Set();
+  items.forEach(item => {
+    if(item.tacoText){
+      // Extraer números del formato "taco 2" o "taco 2,3"
+      const matches = item.tacoText.match(/\d+/g);
+      if(matches) matches.forEach(t => tacos.add(Number(t)));
+    }
+  });
+  const tacosArray = Array.from(tacos).sort((a,b)=>a-b);
+  filtroTaco.innerHTML =
+    `<option value="">Todos los tacos</option>` +
+    tacosArray.map(t => `<option value="${t}">Taco ${t}</option>`).join("");
+  if (prev && tacosArray.includes(Number(prev))) filtroTaco.value = prev;
+}
+
 // === Cargar y agrupar ===
 async function cargarCatalogo(){
   try{
@@ -268,6 +290,7 @@ async function cargarCatalogo(){
     if (firstLoad){
       if(filtroNombre) filtroNombre.value = "";
       if(filtroColor)  filtroColor.value  = "";
+      if(filtroTaco)   filtroTaco.value   = "";
       if(soloDisp) soloDisp.checked = false;
       firstLoad = false;
     }
@@ -275,6 +298,7 @@ async function cargarCatalogo(){
     groups = agruparNombreColor(rowsRaw);
     populateNameFilter(groups);
     populateColorFilter(groups);
+    populateTacoFilter(groups);
     aplicarFiltros();
   }catch(e){
     console.error(e);
@@ -286,13 +310,15 @@ async function cargarCatalogo(){
 function aplicarFiltros(){
   const selNom = (filtroNombre?.value || "").trim();
   const selCol = (filtroColor?.value  || "").trim();   // color en mayúsculas
+  const selTaco = filtroTaco?.value ? Number(filtroTaco.value) : null;
   const onlyAvail = !!soloDisp?.checked;
 
   groupsFiltrados = groups.filter(g=>{
     const matchNombre = !selNom || (g.nombre || "") === selNom;
     const matchColor  = !selCol || (g.color  || "").toUpperCase() === selCol;
+    const matchTaco = !selTaco || (g.tacoText && g.tacoText.includes(selTaco.toString()));
     const matchEstado = !onlyAvail || g.disponible === true;
-    return matchNombre && matchColor && matchEstado;
+    return matchNombre && matchColor && matchTaco && matchEstado;
   });
 
   render();
@@ -361,6 +387,7 @@ function render(){
 // === Eventos de filtros ===
 filtroNombre?.addEventListener("change", aplicarFiltros);
 filtroColor?.addEventListener("change", aplicarFiltros);
+filtroTaco?.addEventListener("change", aplicarFiltros);
 soloDisp?.addEventListener("change", aplicarFiltros);
 
 // === Init ===
