@@ -216,6 +216,9 @@ async function renderProduct(g){
   document.getElementById("title").textContent =
     [g.nombre||"Producto", g.color||""].filter(Boolean).join("-");
 
+   // 👇 título dinámico para el navegador (lo que GA4 recoge)
+  document.title = `${g.nombre} — WAIRA & DR`;
+
   // precio con lógica de promoción
   const price = document.getElementById("price");
   price.innerHTML = "";
