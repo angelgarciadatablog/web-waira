@@ -79,10 +79,12 @@ function csvToObjects(csv){
     else if (est === "OCULTO") o.estado = "OCULTO";
     else o.estado = est || "";
 
-    // color y nombre
+    // color, nombre, sku y tipo
     o.color  = (o.color  || "").trim().toUpperCase();
     o.nombre = (o.nombre || "").trim();
     o.modelo = (o.modelo || "").trim();
+    o.sku    = (o.sku    || "").trim().toUpperCase();
+    o.tipo   = (o.tipo   || "").trim();
 
     return o;
   });
@@ -145,24 +147,24 @@ async function fetchCSV(url){
   }
 }
 
-// === Agrupar por (nombre + color) y calcular métricas ===
+// === Agrupar por SKU y calcular métricas ===
 function agruparNombreColor(items){
   const map = new Map();
   for (const it of items){
-    const nameKey = (it.nombre||"").trim().toUpperCase();
-    const colorKey = (it.color||"").trim().toUpperCase();
-    if (!nameKey || !colorKey) continue;
+    const sku = (it.sku || "").trim().toUpperCase();
+    if (!sku) continue; // Saltar items sin SKU
 
-    const key = `${nameKey}|${colorKey}`;
-    if(!map.has(key)){
-      map.set(key, {
+    if(!map.has(sku)){
+      map.set(sku, {
+        sku: sku,
         nombre: it.nombre,
         color: it.color,
         modelo: it.modelo,
+        tipo: it.tipo,
         items: []
       });
     }
-    const g = map.get(key);
+    const g = map.get(sku);
     g.items.push(it);
   }
 
@@ -210,11 +212,21 @@ function agruparNombreColor(items){
     if (tacos.length === 1) tacoText = `taco ${tacos[0]}`;
     else if (tacos.length > 1) tacoText = `taco ${tacos.join(",")}`;
 
+    // estado agregado: el que más se repite
+    const estadoCounts = {};
+    g.items.forEach(x => {
+      const est = x.estado || "AGOTADO";
+      estadoCounts[est] = (estadoCounts[est] || 0) + 1;
+    });
+    const estadoAgregado = Object.entries(estadoCounts)
+      .sort((a, b) => b[1] - a[1])[0]?.[0] || "AGOTADO";
+
     out.push({
-      slug: slugify(`${g.nombre}-${g.color}`),
+      sku: g.sku,
       nombre: g.nombre,
       color: g.color,
       modelo: g.modelo,
+      tipo: g.tipo,
       tallasDisp,
       tallasAgot,
       disponible: disponibleGrupo,
@@ -223,7 +235,8 @@ function agruparNombreColor(items){
       precioDesde,
       precioSale,
       precioSaleDesde,
-      tacoText
+      tacoText,
+      estado: estadoAgregado
     });
   }
 
@@ -356,18 +369,27 @@ function render(){
     const tacoHtml = g.tacoText ? `<div style="margin-top:4px">${g.tacoText}</div>` : "";
 
     // Construir la ruta de la imagen 1 (portada) desde la carpeta del producto
-    const imgUrl = `assets/img/productos/${g.slug}/1.webp?v=${CSV_VERSION}`;
+    const imgUrl = `assets/img/productos/${g.sku}/1.webp?v=${CSV_VERSION}`;
 
     const chips = []
       .concat(g.tallasDisp.map(t => `<span class="chip">${t}</span>`))
       .concat(g.tallasAgot.map(t => `<span class="chip soldout">${t}</span>`))
       .join("");
 
-    const slug = g.slug; // ya calculado
-
     const card = document.createElement("a");
-    card.href = `producto.html?p=${encodeURIComponent(slug)}`;
+    card.href = `producto.html?p=${encodeURIComponent(g.sku)}`;
     card.className = "card" + (agotadoGrupo ? " agotado" : "");
+    // Agregar data attributes para GA4/GTM
+    card.setAttribute('data-sku', g.sku);
+    card.setAttribute('data-product-name', g.nombre);
+    card.setAttribute('data-product-color', g.color);
+    card.setAttribute('data-product-type', g.tipo || '');
+    card.setAttribute('data-product-model', g.modelo || '');
+    card.setAttribute('data-product-taco', g.tacoText || '');
+    card.setAttribute('data-product-precio', g.precio || '');
+    card.setAttribute('data-product-precio-sale', g.precioSale || '');
+    card.setAttribute('data-product-cantidad', g.stockTotal || '0');
+    card.setAttribute('data-product-estado', g.estado || '');
     card.innerHTML = `
       <div class="body">
         <h4>${[g.nombre || "Modelo", g.color || ""].filter(Boolean).join('-')}</h4>

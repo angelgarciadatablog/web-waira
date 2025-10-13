@@ -59,6 +59,8 @@ function csvToObjects(csv){
     o.color  = (o.color  || "").trim().toUpperCase();
     o.nombre = (o.nombre || "").trim();
     o.modelo = (o.modelo || "").trim();
+    o.sku    = (o.sku    || "").trim().toUpperCase();
+    o.tipo   = (o.tipo   || "").trim();
     o.descripcion = (o.descripcion || "").trim();
     o.imagen = (o.imagen || "").trim();
     return o;
@@ -124,14 +126,12 @@ async function fetchCSV(url){
 function agruparNombreColor(items){
   const map = new Map();
   for(const it of items){
-    const nameKey = (it.nombre||"").trim().toUpperCase();
-    const colorKey = (it.color||"").trim().toUpperCase();
-    if(!nameKey || !colorKey) continue;
-    const key = `${nameKey}|${colorKey}`;
-    if(!map.has(key)){
-      map.set(key, { nombre:it.nombre, color:it.color, modelo:it.modelo, items:[] });
+    const sku = (it.sku || "").trim().toUpperCase();
+    if(!sku) continue; // Saltar items sin SKU
+    if(!map.has(sku)){
+      map.set(sku, { sku:sku, nombre:it.nombre, color:it.color, modelo:it.modelo, tipo:it.tipo, items:[] });
     }
-    const g = map.get(key);
+    const g = map.get(sku);
     g.items.push(it);
   }
   const groups=[];
@@ -158,14 +158,25 @@ function agruparNombreColor(items){
     let tacoText="";
     if(tacos.length===1) tacoText=`taco ${tacos[0]}`;
     else if(tacos.length>1) tacoText=`taco ${tacos.join(",")}`;
+
+    // estado agregado: el que más se repite
+    const estadoCounts = {};
+    g.items.forEach(x => {
+      const est = x.estado || "AGOTADO";
+      estadoCounts[est] = (estadoCounts[est] || 0) + 1;
+    });
+    const estadoAgregado = Object.entries(estadoCounts)
+      .sort((a, b) => b[1] - a[1])[0]?.[0] || "AGOTADO";
+
     groups.push({
-      slug: slugify(`${g.nombre}-${g.color}`),
-      nombre:g.nombre, color:g.color, modelo:g.modelo,
+      sku: g.sku,
+      nombre:g.nombre, color:g.color, modelo:g.modelo, tipo:g.tipo,
       descripcion: g.items.find(x=>x.descripcion)?.descripcion || "",
       tallasDisp, tallasAgot, stockTotal,
       precio, precioDesde,
       precioSale, precioSaleDesde,
-      tacoText
+      tacoText,
+      estado: estadoAgregado
     });
   }
   return groups;
@@ -177,9 +188,9 @@ function setMainImage(url){
   main.src = `${url}${url.includes("?") ? "&" : "?"}v=${CSV_VERSION}`;
 }
 
-async function loadProductImages(slug) {
+async function loadProductImages(sku) {
   const images = [];
-  const basePath = `assets/img/productos/${slug}`;
+  const basePath = `assets/img/productos/${sku}`;
   const extensions = ['webp', 'jpg', 'png', 'jpeg']; // Formatos soportados
 
   // Intentar cargar imágenes 1-8 desde la carpeta del producto
@@ -248,7 +259,7 @@ async function renderProduct(g){
 
   // galería: cargar todas las imágenes desde la carpeta del producto
   const thumbs = document.getElementById("thumbs");
-  const imgs = await loadProductImages(g.slug);
+  const imgs = await loadProductImages(g.sku);
 
   if(imgs.length){
     setMainImage(imgs[0]);
@@ -260,6 +271,21 @@ async function renderProduct(g){
     });
   }else{
     setMainImage(""); thumbs.innerHTML="";
+  }
+
+  // Agregar data attributes para GA4/GTM en el body o contenedor principal
+  const metaContainer = document.querySelector('.meta');
+  if(metaContainer) {
+    metaContainer.setAttribute('data-sku', g.sku);
+    metaContainer.setAttribute('data-product-name', g.nombre);
+    metaContainer.setAttribute('data-product-color', g.color);
+    metaContainer.setAttribute('data-product-type', g.tipo || '');
+    metaContainer.setAttribute('data-product-model', g.modelo || '');
+    metaContainer.setAttribute('data-product-taco', g.tacoText || '');
+    metaContainer.setAttribute('data-product-precio', g.precio || '');
+    metaContainer.setAttribute('data-product-precio-sale', g.precioSale || '');
+    metaContainer.setAttribute('data-product-cantidad', g.stockTotal || '0');
+    metaContainer.setAttribute('data-product-estado', g.estado || '');
   }
 
   // CTA: botón de WhatsApp con mensaje pre-escrito
@@ -282,9 +308,9 @@ async function renderProduct(g){
 }
 
 // Función para cargar productos similares aleatorios
-async function loadSimilarProducts(currentSlug, allGroups, maxProducts = 8) {
+async function loadSimilarProducts(currentSku, allGroups, maxProducts = 8) {
   // Filtrar todos los productos excepto el actual
-  const otherProducts = allGroups.filter(g => g.slug !== currentSlug);
+  const otherProducts = allGroups.filter(g => g.sku !== currentSku);
 
   // Mezclar aleatoriamente los productos
   const shuffled = otherProducts.sort(() => Math.random() - 0.5);
@@ -298,7 +324,7 @@ async function loadSimilarProducts(currentSlug, allGroups, maxProducts = 8) {
 
   carousel.innerHTML = selectedProducts.map(product => {
     // Construir la ruta de la imagen 1 (portada) desde la carpeta del producto
-    const imgUrl = `assets/img/productos/${product.slug}/1.webp`; // Por defecto usamos webp, el navegador fallará gracefully si no existe
+    const imgUrl = `assets/img/productos/${product.sku}/1.webp`; // Por defecto usamos webp, el navegador fallará gracefully si no existe
     const productName = [product.nombre, product.color].filter(Boolean).join(" - ");
     const priceText = product.precio
       ? `${product.precioDesde ? "Desde " : ""}S/ ${product.precio.toFixed(2)}`
@@ -308,7 +334,10 @@ async function loadSimilarProducts(currentSlug, allGroups, maxProducts = 8) {
       : "Consultar disponibilidad";
 
     return `
-      <a href="producto.html?p=${product.slug}" class="similar-product-card">
+      <a href="producto.html?p=${product.sku}" class="similar-product-card"
+         data-sku="${product.sku}"
+         data-product-name="${product.nombre}"
+         data-product-color="${product.color}">
         <img src="${imgUrl}?v=${CSV_VERSION}" alt="${productName}" class="similar-product-image" loading="lazy" onerror="this.style.display='none'">
         <div class="similar-product-info">
           <h3 class="similar-product-name">${productName}</h3>
@@ -321,14 +350,14 @@ async function loadSimilarProducts(currentSlug, allGroups, maxProducts = 8) {
 }
 
 (async function init(){
-  const slug = (getParam("p") || "").toUpperCase();
-  if(!slug){ document.getElementById("title").textContent="Producto no especificado"; return; }
+  const sku = (getParam("p") || "").toUpperCase();
+  if(!sku){ document.getElementById("title").textContent="Producto no especificado"; return; }
 
   try{
     const rows = await fetchCSV(sheetUrl());
     const valid = rows.filter(r => (r.estado||"") !== "OCULTO");
     const groups = agruparNombreColor(valid);
-    const g = groups.find(x => x.slug === slug);
+    const g = groups.find(x => x.sku === sku);
     if(!g){
       document.getElementById("title").textContent = "Producto no encontrado";
       return;
@@ -336,7 +365,7 @@ async function loadSimilarProducts(currentSlug, allGroups, maxProducts = 8) {
     await renderProduct(g);
 
     // Cargar productos similares
-    await loadSimilarProducts(slug, groups);
+    await loadSimilarProducts(sku, groups);
   }catch(e){
     console.error(e);
     document.getElementById("title").textContent = "Error cargando producto";
