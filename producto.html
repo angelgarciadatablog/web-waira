@@ -1132,6 +1132,16 @@
       videoModal.classList.add('active');
       document.body.style.overflow = 'hidden';
       updateVideoPagination();
+
+      // === DATALAYER: video_click ===
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: 'video_click',
+        video_action: 'open',
+        video_index: index + 1,
+        video_url: videoSrc,
+        page_location: 'product_detail'
+      });
     }
 
     // Cerrar modal
@@ -1196,6 +1206,23 @@
       } else if (e.key === 'ArrowRight') {
         showNextVideo();
       }
+    });
+
+    // === DATALAYER: social_click (redes sociales del footer) ===
+    const socialLinks = document.querySelectorAll('.social-link');
+    socialLinks.forEach(link => {
+      link.addEventListener('click', function(e) {
+        const socialNetwork = this.getAttribute('aria-label') || 'unknown';
+        const socialUrl = this.getAttribute('href');
+
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: 'social_click',
+          social_network: socialNetwork,
+          social_url: socialUrl,
+          page_location: 'product_detail'
+        });
+      });
     });
   </script>
 
