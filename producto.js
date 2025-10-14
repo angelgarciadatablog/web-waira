@@ -311,38 +311,41 @@ async function renderProduct(g){
   `;
 
   // === DATALAYER: view_item ===
-  window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push({ ecommerce: null }); // Limpiar ecommerce anterior
-  window.dataLayer.push({
-    event: 'view_item',
-    page_title: document.title, // Título dinámico para GA4
-    page_location: window.location.href,
-    page_path: window.location.pathname,
-    ecommerce: {
-      currency: 'PEN',
-      value: g.precioSale || g.precio || 0,
-      items: [{
-        item_id: g.sku,
-        item_name: g.nombre,
-        item_brand: 'WAIRA & DR',
-        item_category: g.tipo || '',
-        item_variant: g.color,
-        price: g.precioSale || g.precio || 0,
-        quantity: 1
-      }]
-    },
-    // Datos adicionales del producto
-    product_sku: g.sku,
-    product_name: g.nombre,
-    product_color: g.color,
-    product_type: g.tipo || '',
-    product_model: g.modelo || '',
-    product_taco: g.tacoText || '',
-    product_precio: g.precio || 0,
-    product_precio_sale: g.precioSale || 0,
-    product_stock: g.stockTotal || 0,
-    product_estado: g.estado || ''
-  });
+  // Esperar un tick para asegurar que el DOM y el título estén completamente actualizados
+  setTimeout(() => {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ ecommerce: null }); // Limpiar ecommerce anterior
+    window.dataLayer.push({
+      event: 'view_item',
+      page_title: document.title, // Título dinámico para GA4
+      page_location: window.location.href,
+      page_path: window.location.pathname,
+      ecommerce: {
+        currency: 'PEN',
+        value: g.precioSale || g.precio || 0,
+        items: [{
+          item_id: g.sku,
+          item_name: g.nombre,
+          item_brand: 'WAIRA & DR',
+          item_category: g.tipo || '',
+          item_variant: g.color,
+          price: g.precioSale || g.precio || 0,
+          quantity: 1
+        }]
+      },
+      // Datos adicionales del producto
+      product_sku: g.sku,
+      product_name: g.nombre,
+      product_color: g.color,
+      product_type: g.tipo || '',
+      product_model: g.modelo || '',
+      product_taco: g.tacoText || '',
+      product_precio: g.precio || 0,
+      product_precio_sale: g.precioSale || 0,
+      product_stock: g.stockTotal || 0,
+      product_estado: g.estado || ''
+    });
+  }, 100);
 
   // === DATALAYER: begin_checkout (botón principal) ===
   setTimeout(() => {
