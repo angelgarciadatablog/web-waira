@@ -223,7 +223,11 @@ async function loadProductImages(sku) {
 }
 
 async function renderProduct(g){
-  // título
+  // título de la página (para SEO y GA4)
+  const productFullName = [g.nombre||"Producto", g.color||""].filter(Boolean).join(" ");
+  document.title = `${productFullName} — WAIRA & DR`;
+
+  // título del h1
   document.getElementById("title").textContent =
     [g.nombre||"Producto", g.color||""].filter(Boolean).join("-");
 
@@ -311,6 +315,9 @@ async function renderProduct(g){
   window.dataLayer.push({ ecommerce: null }); // Limpiar ecommerce anterior
   window.dataLayer.push({
     event: 'view_item',
+    page_title: document.title, // Título dinámico para GA4
+    page_location: window.location.href,
+    page_path: window.location.pathname,
     ecommerce: {
       currency: 'PEN',
       value: g.precioSale || g.precio || 0,
