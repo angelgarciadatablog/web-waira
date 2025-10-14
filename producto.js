@@ -184,39 +184,34 @@ function agruparNombreColor(items){
 
 function setMainImage(url){
   const main = document.getElementById("mainImg");
-  if(!url){ main.removeAttribute("src"); return; }
+  if(!url){
+    main.removeAttribute("src");
+    main.style.display = 'none';
+    return;
+  }
+
   main.src = `${url}${url.includes("?") ? "&" : "?"}v=${CSV_VERSION}`;
+
+  // Mostrar cuando cargue correctamente
+  main.onload = function() {
+    this.style.display = 'block';
+  };
+
+  // Ocultar si falla la carga
+  main.onerror = function() {
+    this.style.display = 'none';
+    console.warn('Imagen principal no disponible:', url);
+  };
 }
 
-async function loadProductImages(sku) {
+function loadProductImages(sku) {
+  // Generar rutas para 10 posibles imágenes en formato webp
+  // Solo se mostrarán las que existan (mediante onload/onerror en el DOM)
   const images = [];
   const basePath = `assets/img/productos/${sku}`;
-  const extensions = ['webp', 'jpg', 'png', 'jpeg']; // Formatos soportados
 
-  // Intentar cargar imágenes 1-8 desde la carpeta del producto
-  // La imagen 1 será la de portada, las demás (2-8) son galería adicional
-  for (let i = 1; i <= 8; i++) {
-    let found = false;
-
-    // Intentar cada extensión hasta encontrar una que exista
-    for (const ext of extensions) {
-      const imgPath = `${basePath}/${i}.${ext}`;
-      try {
-        // Verificar si la imagen existe haciendo un HEAD request
-        const response = await fetch(imgPath, { method: 'HEAD' });
-        if (response.ok) {
-          images.push(imgPath);
-          found = true;
-          break; // Encontramos la imagen, pasar al siguiente número
-        }
-      } catch (e) {
-        // La imagen no existe con esta extensión, probar la siguiente
-        continue;
-      }
-    }
-
-    // Si no encontramos ninguna imagen con este número, asumimos que no hay más
-    if (!found) break;
+  for (let i = 1; i <= 10; i++) {
+    images.push(`${basePath}/${i}.webp`);
   }
 
   return images;
@@ -263,15 +258,25 @@ async function renderProduct(g){
 
   // galería: cargar todas las imágenes desde la carpeta del producto
   const thumbs = document.getElementById("thumbs");
-  const imgs = await loadProductImages(g.sku);
+  const imgs = loadProductImages(g.sku);
 
   if(imgs.length){
     setMainImage(imgs[0]);
     thumbs.innerHTML = imgs
-      .map(url=>`<div class="thumb"><img src="${url}${url.includes("?")?"&":"?"}v=${CSV_VERSION}" alt=""></div>`)
+      .map((url, idx) => `
+        <div class="thumb" data-index="${idx}" style="display:none;">
+          <img src="${url}${url.includes("?")?"&":"?"}v=${CSV_VERSION}"
+               alt=""
+               onload="this.parentElement.style.display='flex';"
+               onerror="this.parentElement.remove();">
+        </div>
+      `)
       .join("");
-    thumbs.querySelectorAll(".thumb").forEach((el,idx)=>{
-      el.addEventListener("click", ()=> setMainImage(imgs[idx]));
+    thumbs.querySelectorAll(".thumb").forEach((el)=>{
+      el.addEventListener("click", ()=> {
+        const idx = parseInt(el.getAttribute('data-index'));
+        setMainImage(imgs[idx]);
+      });
     });
   }else{
     setMainImage(""); thumbs.innerHTML="";
